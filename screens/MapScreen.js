@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
-import { Image, View,  Text, ActivityIndicator } from 'react-native';
+import { Image, View,  Text, ActivityIndicator, Animated, Dimensions } from 'react-native';
 import { Location, Permissions } from 'expo';
 import MapView, { Marker } from 'react-native-maps';
 // import { connect } from 'react-redux';
 import { Button, Icon } from 'react-native-elements';
 
+import xmarker from '../assets/xmarker.png'
 import marker from '../assets/marker.png'
 // import * as actions from '../actions'
+
+import DropPin from '../components/DropPin';
+
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 
 class MapScreen extends Component {
@@ -26,12 +33,18 @@ class MapScreen extends Component {
       longitude: -122.4324,
 			longitudeDelta: 0.1,
 			latitudeDelta: 0.3
-		}
+		},
+		startMarkerWidth: -25,
+		startMarkerHeight: -50
 	}
 
 	componentDidMount() {
 		this.setState({ mapLoaded: true });
 		this._getLocationAsync();
+
+		// setup marker animation
+		this.position = new Animated.ValueXY({x: SCREEN_WIDTH/2-15.5, y: -50});
+		
 	}
 
 	_getLocationAsync = async () => {
@@ -57,7 +70,11 @@ class MapScreen extends Component {
 		// this.props.fetchJobs(this.state.region, () => {
 		// 	this.props.navigation.navigate('deck');
 		// });
-		console.log('pressed');
+		Animated.spring(this.position, {
+			toValue: { x: SCREEN_WIDTH/2-15.5, y: SCREEN_HEIGHT/2-75}
+		}).start();
+		console.log(this.state.region);
+
 	}
 
 	render() {
@@ -77,8 +94,11 @@ class MapScreen extends Component {
 					region={this.state.region}
 					onRegionChangeComplete={this.onRegionChangeComplete}
 				/>
-				<View style={styles.markerContainer} pointerEvents="none">
-          <Image style={styles.markerStyle} source={marker} />
+
+				<Animated.Image style={[this.position.getLayout(), styles.markerStyle]} source={marker} />
+
+				<View style={styles.xmarkerContainer} pointerEvents="none">
+          <Image style={styles.xmarkerStyle} source={xmarker} />
         </View>
 				<View style={styles.buttonContainer}>
 					<Button 
@@ -107,15 +127,20 @@ const styles = {
 		left: 0, 
 		right: 0
 	},
-	markerStyle: {
+	xmarkerStyle: {
     height: 50,
-    width: 31
+    width: 50
   },
-  markerContainer: {
+  xmarkerContainer: {
   	left: '50%',
     top: '50%',
-    marginLeft: -12,
-    marginTop: -50,
+    marginLeft: -25,
+    marginTop: -10,
+    position: 'absolute',
+  },
+  markerStyle: {
+    height: 50,
+    width: 31,
     position: 'absolute',
   }
 }
