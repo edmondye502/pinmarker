@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
+import { Provider } from 'react-redux';
+
+import store from './store';
 
 import MapScreen from './screens/MapScreen';
 import PinsScreen from './screens/PinsScreen';
@@ -21,7 +24,9 @@ export default class App extends React.Component {
     });
 
     return (
-      <MainNavigator style={styles.container} />
+    	<Provider store={store}>
+      	<MainNavigator style={styles.container} />
+      </Provider>
     );
   }
 }

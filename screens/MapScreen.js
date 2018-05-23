@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Image, View,  Text, ActivityIndicator, Animated, Dimensions } from 'react-native';
 import { Location, Permissions } from 'expo';
 import MapView, { Marker } from 'react-native-maps';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { Button, Icon } from 'react-native-elements';
 
 import xmarker from '../assets/xmarker.png'
 import marker from '../assets/marker.png'
-// import * as actions from '../actions'
+import * as actions from '../actions'
 
 import DropPin from '../components/DropPin';
 
@@ -67,18 +67,26 @@ class MapScreen extends Component {
 	}
 
 	onButtonPress = () => {
-		// this.props.fetchJobs(this.state.region, () => {
-		// 	this.props.navigation.navigate('deck');
-		// });
 		Animated.spring(this.position, {
 			toValue: { x: SCREEN_WIDTH/2-15.5, y: SCREEN_HEIGHT/2-75}
-		}).start();
-		console.log(this.state.region);
+		}).start(() => this.dropPinCallback());
+	}
 
+	dropPinCallback() {
+		const pin = {
+			latitude: this.state.region.latitude,
+			longitude: this.state.region.longitude
+		};
+
+		this.props.pinDropped(pin, () => {
+			this.props.navigation.navigate('pins');
+		});
+
+		// disable map movement
+		// reset pin
 	}
 
 	render() {
-		
 		if (!this.state.mapLoaded) {
 			return (
 				<View style={{ flex: 1, justifyContent: 'center' }}>
@@ -147,4 +155,4 @@ const styles = {
 
 
 // export default connect(null, actions)(MapScreen);
-export default MapScreen;
+export default connect(null, actions)(MapScreen);
