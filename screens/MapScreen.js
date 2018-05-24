@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View,  Text, ActivityIndicator, Animated, Dimensions } from 'react-native';
+import { Image, View,  Text, ActivityIndicator, Animated, Dimensions, Platform } from 'react-native';
 import { Location, Permissions } from 'expo';
 import MapView, { Marker } from 'react-native-maps';
 import { connect } from 'react-redux';
@@ -35,7 +35,9 @@ class MapScreen extends Component {
 			latitudeDelta: 0.3
 		},
 		startMarkerWidth: -25,
-		startMarkerHeight: -50
+		startMarkerHeight: -50,
+		allowAnimations: true,
+		showMarker: true
 	}
 
 	componentDidMount() {
@@ -67,23 +69,34 @@ class MapScreen extends Component {
 	}
 
 	onButtonPress = () => {
+		// disable map scrolling while animation starts
+		this.setState({ allowAnimations: false });
+
+		///////// need to disable navigation and other button presses as well
+
+		// start animations 
 		Animated.spring(this.position, {
 			toValue: { x: SCREEN_WIDTH/2-15.5, y: SCREEN_HEIGHT/2-75}
 		}).start(() => this.dropPinCallback());
 	}
 
 	dropPinCallback() {
+		// initialize new pin with latlng coords
 		const pin = {
 			latitude: this.state.region.latitude,
 			longitude: this.state.region.longitude
 		};
 
+		// automatically navigate to pins page, might add a add pin details page inbetween
 		this.props.pinDropped(pin, () => {
 			this.props.navigation.navigate('pins');
 		});
 
-		// disable map movement
-		// reset pin
+		// temporary hacky solution to reset marker
+		Animated.timing(this.position, {toValue: {x: SCREEN_WIDTH/2-15.5, y: -50}, duration: 1}).start();
+		// enable map scrolling 
+		this.setState({ allowAnimations: true });
+
 	}
 
 	render() {
@@ -97,8 +110,10 @@ class MapScreen extends Component {
 		return (
 			<View style={styles.mainContainer}>
 				<MapView 
-					style={styles.mapStyle} 
 					showsUserLocation
+					scrollEnabled={this.state.allowAnimations}
+					cacheEnabled={!this.state.allowAnimations && Platform.OS === 'android'}
+					style={styles.mapStyle} 
 					region={this.state.region}
 					onRegionChangeComplete={this.onRegionChangeComplete}
 				/>
