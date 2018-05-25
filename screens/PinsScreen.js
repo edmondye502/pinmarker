@@ -15,44 +15,15 @@ class PinsScreen extends Component {
 		}
 	}
 
-	renderPins() {
-		return this.props.pins.map(pin => {
-
-			const { latitude, longitude } = pin;
-
-			return (
-				<Card title='card' key={(latitude*longitude)}>
-					<View style={styles.detailWrapper}>
-						<Text>Latitude: {latitude}</Text>
-						<Text>Longitude: {longitude}</Text>
-					</View>
-				</Card>
-			);
-		});
-	}
-
-
 	render() {
 		return (
-			<ScrollView>
-				{this.renderPins()}
-			</ScrollView>
+			<View>
+				<Text>Settings Screen</Text>
+			</View>
 		);	
 	}
 }
 
-const styles = {
-	detailWrapper: {
-		marginTop: 10,
-		marginBottom: 10,
-		flexDirection: 'column',
-		justifyContent: 'space-around'
-	}
-}
-
-function mapStateToProps(state) {
-	return { pins: state.pins };
-}
 
 
-export default connect(mapStateToProps)(PinsScreen);
+export default PinsScreen;

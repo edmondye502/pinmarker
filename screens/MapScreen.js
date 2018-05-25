@@ -18,13 +18,6 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 class MapScreen extends Component {
 
-	static navigationOptions = {
-		tabBarLabel: 'Map',
-		tabBarIcon: ({ tintColor }) => {
-			return <Icon name='map' size={30} color={tintColor} />
-		}
-	}
-
 	state = {
 		mapLoaded: false,
 		errorMessage: '',
@@ -89,7 +82,7 @@ class MapScreen extends Component {
 
 		// automatically navigate to pins page, might add a add pin details page inbetween
 		this.props.pinDropped(pin, () => {
-			this.props.navigation.navigate('pins');
+			this.props.navigation.navigate('add');
 		});
 
 		// temporary hacky solution to reset marker
