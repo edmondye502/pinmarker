@@ -36,6 +36,7 @@ class MapScreen extends Component {
 	componentDidMount() {
 		this.setState({ mapLoaded: true });
 		this._getLocationAsync();
+		console.log(this.props);
 
 		// setup marker animation
 		this.position = new Animated.ValueXY({x: SCREEN_WIDTH/2-15.5, y: -50});
@@ -161,6 +162,4 @@ const styles = {
   }
 }
 
-
-// export default connect(null, actions)(MapScreen);
 export default connect(null, actions)(MapScreen);
