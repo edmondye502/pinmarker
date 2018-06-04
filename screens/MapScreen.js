@@ -9,8 +9,6 @@ import xmarker from '../assets/xmarker.png'
 import marker from '../assets/marker.png'
 import * as actions from '../actions'
 
-import DropPin from '../components/DropPin';
-
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
