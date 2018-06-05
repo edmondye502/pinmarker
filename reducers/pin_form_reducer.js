@@ -6,7 +6,6 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-	updatedPin: {},
 	pinName: '',
 	error: ''
 }
@@ -18,7 +17,7 @@ export default (state = INITIAL_STATE, action) => {
 		case PIN_FORM_ERROR:
 			return { ...state, error: 'Invalid Pin Name' };
 		case PIN_ADDED:
-			return { ...state, ...INITIAL_STATE, updatedPin: action.payload };
+			return [action.payload, ...state];
 		case PIN_FORM_CLEAR:
 			return INITIAL_STATE;
 		default:

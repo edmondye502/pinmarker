@@ -34,7 +34,6 @@ class MapScreen extends Component {
 	componentDidMount() {
 		this.setState({ mapLoaded: true });
 		this._getLocationAsync();
-		console.log(this.props);
 
 		// setup marker animation
 		this.position = new Animated.ValueXY({x: SCREEN_WIDTH/2-15.5, y: -50});
@@ -79,7 +78,7 @@ class MapScreen extends Component {
 			longitude: this.state.region.longitude
 		};
 
-		// automatically navigate to pins page, might add a add pin details page inbetween
+		// automatically navigate to pins detail page
 		this.props.pinDropped(pin, () => {
 			this.props.navigation.navigate('add');
 		});

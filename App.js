@@ -33,13 +33,24 @@ export default class App extends React.Component {
     			tabBarIcon: ({ tintColor }) => { return <Icon name='map' size={30} color={tintColor} />}
     		}
   	  },
-      pins: { screen: PinsScreen },
-      settings: { screen: SettingsScreen },
+      pins: { screen: PinsScreen,
+      	navigationOptions : {
+					tabBarLabel: 'Pins',
+					tabBarIcon: ({ tintColor }) => { return <Icon name='location-on' size={30} color={tintColor} />}
+				}
+      },
+      settings: { screen: SettingsScreen,
+      	navigationOptions : {
+					tabBarLabel: 'Settings',
+					tabBarIcon: ({ tintColor }) => { return <Icon name='settings' size={30} color={tintColor} />}
+				}
+      },
     }, 
     {
       tabBarOptions: {
         labelStyle: { fontSize: 12 }
-      }
+      },
+      lazy: true
     });
 
     

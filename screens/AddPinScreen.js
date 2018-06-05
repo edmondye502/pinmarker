@@ -131,7 +131,7 @@ const styles = {
 }
 
 function mapStateToProps(state) {
-	const { pin } = state.pin;
+	const { pin } = state.pinDrop;
 	const { pinName, error } = state.pinForm;
 
 	return { pin, pinName, error };

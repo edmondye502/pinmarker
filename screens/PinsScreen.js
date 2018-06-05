@@ -8,22 +8,32 @@ import * as actions from '../actions'
 
 class PinsScreen extends Component {
 
-	static navigationOptions = {
-		tabBarLabel: 'Pins',
-		tabBarIcon: ({ tintColor }) => {
-			return <Icon name='location-on' size={30} color={tintColor} />
-		}
+	renderPins() {
+		console.log(this.props.pins);
+		return this.props.pins.map(pin => {
+			const { longitude, latitude, name } = pin;
+
+			return (
+				<Card title={name} key={longitude*latitude}>
+					<Text>{name} {latitude} {longitude}</Text>
+				</Card>
+			);
+		});
 	}
 
 	render() {
 		return (
-			<View>
-				<Text>Pins Screen</Text>
-			</View>
+			<ScrollView>
+				{this.renderPins()}
+			</ScrollView>
 		);	
 	}
+
 }
 
 
+function mapStateToProps(state) {
+	return { pins: state.pinAdd };
+}
 
-export default PinsScreen;
+export default connect(mapStateToProps)(PinsScreen);

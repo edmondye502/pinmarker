@@ -11,6 +11,7 @@ import {
 export const pinDropped = (pin, callback) => {
 	return (dispatch) => {
 		dispatch({ type: PIN_DROPPED, payload: pin });
+		console.log('calldsfdsf');
 		callback();
 	}
 };

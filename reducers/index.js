@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
 
-import pin from './pins_reducer';
+import pinDrop from './pin_dropped_reducer';
 import pinForm from './pin_form_reducer';
+import pinAdd from './pin_add_reducer';
 
 export default combineReducers({
-	pin, pinForm
+	pinDrop, pinForm, pinAdd
 });
