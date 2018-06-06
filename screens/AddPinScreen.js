@@ -59,7 +59,7 @@ class AddPinScreen extends Component {
 			<Card title='Pin Details' style={styles.detailWrapper}>
 				<MapView
 					scrollEnabled={false}
-					style={{ height: 200 }}
+					style={{ height: 100 }}
 					cacheEnabled={Platform.OS === 'android'}
 					initialRegion={initialRegion}
 				>

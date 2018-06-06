@@ -9,8 +9,15 @@ import * as actions from '../actions'
 
 class PinsScreen extends Component {
 
+	onDirectionButtonPress = () => {
+		console.log('direction button pressed');
+	}
+
+	onDeleteButtonPress = () => {
+		console.log('delete button pressed');
+	}
+
 	renderPins() {
-		console.log(this.props.pins);
 		return this.props.pins.map(pin => {
 			const { longitude, latitude, name } = pin;
 			const initialRegion = {
@@ -24,14 +31,31 @@ class PinsScreen extends Component {
 				<Card title={name} key={longitude*latitude} style={styles.detailWrapper}>
 					<MapView
 						scrollEnabled={false}
-						style={{ height: 200 }}
+						style={{ height: 100 }}
 						cacheEnabled={Platform.OS === 'android'}
 						initialRegion={initialRegion}
 					>
 						<Marker
 							coordinate={{ latitude, longitude }}
 						/>
-				</MapView>
+					</MapView>
+
+					<View style={styles.buttonStyle}>
+						<Button
+							title='Directions'
+							backgroundColor='#009688'
+							icon={{ name: 'directions' }}
+							onPress={this.onDirectionButtonPress}
+						/>
+						<Button
+							title='Delete'
+							backgroundColor='red'
+							icon={{ name: 'delete' }}
+							onPress={this.onDeleteButtonPress}
+						/>
+					</View>
+
+				/>
 			</Card>
 			);
 		});
@@ -57,6 +81,11 @@ const styles = {
 		marginBottom: 10,
 		flexDirection: 'column',
 	},
+	buttonStyle: {
+		marginTop: 10,
+		flexDirection: 'row',
+		justifyContent: 'space-around'
+	}
 }
 
 function mapStateToProps(state) {
