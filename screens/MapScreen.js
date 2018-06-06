@@ -12,7 +12,7 @@ import * as actions from '../actions'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
-
+var TEMP_ID = 1;
 
 class MapScreen extends Component {
 
@@ -28,7 +28,7 @@ class MapScreen extends Component {
 		startMarkerWidth: -25,
 		startMarkerHeight: -50,
 		allowAnimations: true,
-		showMarker: true
+		showMarker: true,
 	}
 
 	componentDidMount() {
@@ -74,9 +74,11 @@ class MapScreen extends Component {
 	dropPinCallback() {
 		// initialize new pin with latlng coords
 		const pin = {
+			id: TEMP_ID,
 			latitude: this.state.region.latitude,
 			longitude: this.state.region.longitude
 		};
+		TEMP_ID++;
 
 		// automatically navigate to pins detail page
 		this.props.pinDropped(pin, () => {

@@ -13,57 +13,67 @@ class PinsScreen extends Component {
 		console.log('direction button pressed');
 	}
 
-	onDeleteButtonPress = () => {
-		console.log('delete button pressed');
+	onDeleteButtonPress(id) {
+		this.props.deletePin(id);
 	}
 
 	renderPins() {
-		return this.props.pins.map(pin => {
-			const { longitude, latitude, name } = pin;
-			const initialRegion = {
-				longitude,
-				latitude,
-				longitudeDelta: 0.001,
-				latitudeDelta: 0.0025
-			}
-
+		if(!this.props.pins.length) {
 			return (
-				<Card title={name} key={longitude*latitude} style={styles.detailWrapper}>
-					<MapView
-						scrollEnabled={false}
-						style={{ height: 100 }}
-						cacheEnabled={Platform.OS === 'android'}
-						initialRegion={initialRegion}
-					>
-						<Marker
-							coordinate={{ latitude, longitude }}
-						/>
-					</MapView>
-
-					<View style={styles.buttonStyle}>
-						<Button
-							title='Directions'
-							backgroundColor='#009688'
-							icon={{ name: 'directions' }}
-							onPress={this.onDirectionButtonPress}
-						/>
-						<Button
-							title='Delete'
-							backgroundColor='red'
-							icon={{ name: 'delete' }}
-							onPress={this.onDeleteButtonPress}
-						/>
-					</View>
-
-				/>
-			</Card>
+				<Card title='No PinMarkers'>
+					<Button
+						title='Go to Map to Start Adding Some'
+						backgroundColor='#009688'
+						onPress={() => this.props.navigation.navigate('map')}
+					/>
+				</Card>
 			);
-		});
+		}
+		else {
+			return this.props.pins.map(pin => {
+				const { longitude, latitude, name, id } = pin;
+				const initialRegion = {
+					longitude,
+					latitude,
+					longitudeDelta: 0.001,
+					latitudeDelta: 0.0025
+				}
+
+				return (
+					<Card title={name} key={id} style={styles.detailWrapper}>
+						<MapView
+							scrollEnabled={false}
+							style={{ height: 100 }}
+							cacheEnabled={Platform.OS === 'android'}
+							initialRegion={initialRegion}
+						>
+							<Marker
+								coordinate={{ latitude, longitude }}
+							/>
+						</MapView>
+
+						<View style={styles.buttonStyle}>
+							<Button
+								title='Directions'
+								backgroundColor='#009688'
+								icon={{ name: 'directions' }}
+								onPress={this.onDirectionButtonPress}
+							/>
+							<Button
+								title='Delete'
+								backgroundColor='red'
+								icon={{ name: 'delete' }}
+								onPress={() => this.onDeleteButtonPress(id)}
+							/>
+						</View>
+					</Card>
+				);
+			});
+		}
 	}
 
 	render() {
 		return (
-
 			<ScrollView>
 				<Header 
 					centerComponent={{ text: 'My PinMarkers' }}
@@ -89,7 +99,7 @@ const styles = {
 }
 
 function mapStateToProps(state) {
-	return { pins: state.pinAdd };
+	return { pins: state.pin };
 }
 
-export default connect(mapStateToProps)(PinsScreen);
+export default connect(mapStateToProps, actions)(PinsScreen);
