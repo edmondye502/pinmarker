@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View,  Text, ScrollView, Platform } from 'react-native';
+import { View,  Text, ScrollView, Platform, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { Button, Icon, Card, Header } from 'react-native-elements';
 import MapView, { Marker } from 'react-native-maps';
@@ -9,8 +9,10 @@ import * as actions from '../actions'
 
 class PinsScreen extends Component {
 
-	onDirectionButtonPress = () => {
+	onDirectionButtonPress = (latitude, longitude) => {
 		console.log('direction button pressed');
+		const geoUrl = Platform.OS === 'android' ? `geo:${latitude},${longitude}` : `http://maps.apple.com/?ll=${latitude},${longitude}`;
+		Linking.openURL(geoUrl);
 	}
 
 	onDeleteButtonPress(id) {
@@ -57,7 +59,7 @@ class PinsScreen extends Component {
 								title='Directions'
 								backgroundColor='#009688'
 								icon={{ name: 'directions' }}
-								onPress={this.onDirectionButtonPress}
+								onPress={() => this.onDirectionButtonPress(latitude, longitude)}
 							/>
 							<Button
 								title='Delete'
