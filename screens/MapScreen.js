@@ -92,6 +92,21 @@ class MapScreen extends Component {
 
 	}
 
+	renderMarkers() {
+		if(this.props.pins.length) {
+			return this.props.pins.map(pin => {
+				const { longitude, latitude, name, id } = pin;
+				return (
+					<Marker
+						key={id}
+						coordinate={{ latitude, longitude }}
+						title={name}
+					/>		
+				);
+			});
+		}
+	}
+
 	render() {
 		if (!this.state.mapLoaded) {
 			return (
@@ -102,14 +117,16 @@ class MapScreen extends Component {
 		}
 		return (
 			<View style={styles.mainContainer}>
-				<MapView 
+				<MapView
 					showsUserLocation
 					scrollEnabled={this.state.allowAnimations}
 					cacheEnabled={!this.state.allowAnimations && Platform.OS === 'android'}
 					style={styles.mapStyle} 
 					region={this.state.region}
 					onRegionChangeComplete={this.onRegionChangeComplete}
-				/>
+				>
+					{this.renderMarkers()}
+				</MapView>
 
 				<Animated.Image style={[this.position.getLayout(), styles.markerStyle]} source={marker} />
 
@@ -161,4 +178,8 @@ const styles = {
   }
 }
 
-export default connect(null, actions)(MapScreen);
+function mapStateToProps(state) {
+	return { pins: state.pin };
+}
+
+export default connect(mapStateToProps, actions)(MapScreen);
